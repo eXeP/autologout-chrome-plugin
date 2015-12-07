@@ -13,8 +13,15 @@
     "activeTab",
     "https://ajax.googleapis.com/",
     "cookies",
-    "*://*.anttila.com/*"
+    "*://*.anttila.com/*",
+    "background", 
+    "storage"
   ],
+  "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
 
   "content_scripts": [
     {

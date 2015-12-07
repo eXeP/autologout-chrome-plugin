@@ -7,6 +7,15 @@ var _localStorage = null;
 
 var first_timeout = false;
 
+
+console.log("is aloitettu");
+getDataFromExtension("hello", function(idle1, idle2) {
+        console.log("is idletime saatu " + idle1 + " " + idle2);
+        IDLE_TIMEOUT = idle1;
+        IDLE_TIMEOUT_2 = idle2;
+    });
+console.log("is getdata done");
+
 idlecheck();
 
 function GetLastResetTimeStamp() {
@@ -111,6 +120,25 @@ function getCookie(cname) {
         if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
     }
     return "";
+}
+
+function getDataFromExtension(key, callback) {
+    document.addEventListener('fetchResponse', function respListener(event) {
+        var data = event.detail;
+
+        // check if this response is for this request
+        if(data.reqId == reqId) {
+            callback(data.idle1, data.idle2);
+            document.removeEventListener('fetchResponse', respListener);
+        }
+    })
+    var reqId = Math.random().toString(); // unique ID for this request
+    var dataObj = {"key":key, "reqId":reqId};
+    var fetchEvent = new CustomEvent('myFetchEvent', {"detail":dataObj});
+    document.dispatchEvent(fetchEvent);
+
+    // get ready for a reply from the content script
+    
 }
 /*
 deleteUserLogonIdCookie();

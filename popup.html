@@ -1,3 +1,4 @@
+
 <!doctype html>
 <!--
  This page is shown when the extension button is clicked, because the
@@ -6,19 +7,22 @@
  -->
 <html>
   <head>
+  <meta charset="utf-8">
     <title>Getting Started Extension's Popup</title>
     <style>
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
       }
-      #status {
+      #ohje {
         /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
+        
+        
+        
+        max-width: 350px;
+        min-width: 350px;
       }
+      
     </style>
 
     <!--
@@ -27,11 +31,24 @@
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
-    <script src="popup.js"></script>
+    <script src="popup.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
+    <div id = "ohje">
+      Täältä voit säätää automaattisen uloskirjautumisen aikakatkaisuja.
+      
+    </div>
+    <form action="">
+      1. aikakatkaisu<br>
+      <input type="text" name="idle1" id="idle1">
+      <br>
+      2. aikakatkaisu<br>
+      <input type="text" name="idle2" id="idle2">
+    </form>
+    <br>
+    <button id="saveBtn">Tallenna</button>
+
     <div id="status"></div>
-    <img id="image-result" hidden>
   </body>
 </html>
 
