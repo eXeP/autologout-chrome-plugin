@@ -25,20 +25,18 @@ document.addEventListener('myFetchEvent', function(event) {
     			console.log("id2 "+idlet2);
     			idlet1 = items.idletime1;
     		}
-    		respond();
+    		var dataFromPage = event.detail;
+    		var responseData = {"value":internalStorage[dataFromPage.key], "reqId":dataFromPage.reqId, "idle1":idlet1, "idle2":idlet2};
+    		var fetchResponse = new CustomEvent('fetchResponse', {"detail":responseData});
+    		document.dispatchEvent(fetchResponse);
+    		console.log("cs event sent");
     	
   	});
   	
     
 });
 
-function repond(){
-	var dataFromPage = event.detail;
-    var responseData = {"value":internalStorage[dataFromPage.key], "reqId":dataFromPage.reqId, "idle1":idlet1, "idle2":idlet2};
-    var fetchResponse = new CustomEvent('fetchResponse', {"detail":responseData});
-    document.dispatchEvent(fetchResponse);
-    console.log("cs event sent");
-}
+
 console.log("cs valmis");
 var s = document.createElement('script');
 s.src = chrome.extension.getURL("injectscript.js");

@@ -11,8 +11,8 @@ var first_timeout = false;
 console.log("is aloitettu");
 getDataFromExtension("hello", function(idle1, idle2) {
         console.log("is idletime saatu " + idle1 + " " + idle2);
-        IDLE_TIMEOUT = idle1;
-        IDLE_TIMEOUT_2 = idle2;
+        IDLE_TIMEOUT = parseInt(idle1, 10);
+        IDLE_TIMEOUT_2 = parseInt(idle2, 10);
     });
 console.log("is getdata done");
 
@@ -73,8 +73,10 @@ function CheckIdleTime() {
         ResetTime();
         secondsDiff = 0;
     }
-    WriteProgress((IDLE_TIMEOUT - secondsDiff) + "");
-    if(secondsDiff >= IDLE_TIMEOUT + IDLE_TIMEOUT_2){
+    //WriteProgress((IDLE_TIMEOUT - secondsDiff) + "");
+    console.log("kulunut "+secondsDiff + " ?? " +(IDLE_TIMEOUT + IDLE_TIMEOUT_2) + " " + IDLE_TIMEOUT + " "+IDLE_TIMEOUT_2);
+    if(secondsDiff >= (IDLE_TIMEOUT + IDLE_TIMEOUT_2)){
+        console.log("kirjaudutaan ulos");
     	deleteUserLogonIdCookie();
         logout('https://www.anttila.com/shop/Logoff?catalogId=1444&myAcctMain=1&langId=22&storeId=1444&deleteCartCookie=true&URL=http%3A%2F%2Fwww.anttila.com%2Fshop%2Ffi%2Fnetanttila');
 
