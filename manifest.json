@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "Anttila customer notifier",
+  "name": "Autologout customer notifier",
   "description": "This extension shows a popup and logs user out when inactive.",
   "version": "1.0",
   "manifest_version": 2,
