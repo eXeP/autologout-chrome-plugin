@@ -12,8 +12,8 @@ function restore_options() {
   document.getElementById('idle1').onchange = save_options;
   document.getElementById('idle2').onchange = save_options;
   chrome.storage.sync.get({
-    idletime1: 30,
-    idletime2: 15
+    idletime1: 20,
+    idletime2: 20
   }, function(items) {
     document.getElementById('idle1').value = items.idletime1;
     document.getElementById('idle2').value = items.idletime2;
@@ -24,9 +24,9 @@ function save_options() {
   
   var idle_1 = document.getElementById('idle1').value;
   var idle_2 = document.getElementById('idle2').value;
-  if(!isInt(idle_1) || !isInt(idle_2)){
+  if(!isInt(idle_1) || !isInt(idle_2) || idle_1 <= 0 || idle_2 <= 0){
     var status = document.getElementById('status');
-    status.textContent = 'Ajaksi kelpaavat vain kokonaisluvut.';
+    status.textContent = 'Ajat eivät kelpaa.';
     setTimeout(function() {
       status.textContent = '';
     }, 1000);

@@ -1,13 +1,14 @@
-var IDLE_TIMEOUT = 10; //seconds
-var IDLE_TIMEOUT_2 = 10;
+var IDLE_TIMEOUT = 20; //seconds
+var IDLE_TIMEOUT_2 = 20;
 var _localStorageKey = 'global_countdown_last_reset_timestamp';
 var _idleSecondsTimer = null;
 var _lastResetTimeStamp = (new Date()).getTime();
 var _localStorage = null;
 
 var first_timeout = false;
-
-
+var iDiv;
+var iDiv2;
+var isActive = true;
 console.log("is aloitettu");
 getDataFromExtension("hello", function(idle1, idle2) {
         console.log("is idletime saatu " + idle1 + " " + idle2);
@@ -18,6 +19,16 @@ console.log("is getdata done");
 
 idlecheck();
 
+window.onblur = function () { 
+    isActive = false;
+    console.log("bg laitettu");
+}; 
+
+window.onfocus = function () { 
+    isActive = true;
+    setWarningVisibility(false);
+    ResetTime(); 
+}; 
 function GetLastResetTimeStamp() {
     var lastResetTimeStamp = 0;
     if (_localStorage) {
@@ -65,6 +76,8 @@ function WriteProgress(msg) {
 
 
 function CheckIdleTime() {
+    if(!isActive)
+        return;
     var currentTimeStamp = (new Date()).getTime();
     var lastResetTimeStamp = GetLastResetTimeStamp();
     var secondsDiff = Math.floor((currentTimeStamp - lastResetTimeStamp) / 1000);
@@ -72,22 +85,34 @@ function CheckIdleTime() {
     if (secondsDiff <= 0) {
         ResetTime();
         secondsDiff = 0;
+        setWarningVisibility(false);
     }
     //WriteProgress((IDLE_TIMEOUT - secondsDiff) + "");
     console.log("kulunut "+secondsDiff + " ?? " +(IDLE_TIMEOUT + IDLE_TIMEOUT_2) + " " + IDLE_TIMEOUT + " "+IDLE_TIMEOUT_2);
     if(secondsDiff >= (IDLE_TIMEOUT + IDLE_TIMEOUT_2)){
-        console.log("kirjaudutaan ulos");
+        console.log("kirjaudutaan ulos, host: " + document.location.host);
     	deleteUserLogonIdCookie();
-        logout('https://www.anttila.com/shop/Logoff?catalogId=1444&myAcctMain=1&langId=22&storeId=1444&deleteCartCookie=true&URL=http%3A%2F%2Fwww.anttila.com%2Fshop%2Ffi%2Fnetanttila');
 
+        if(document.location.host.indexOf("anttila") > -1){
+            logout('https://www.anttila.com/shop/Logoff?catalogId=1444&myAcctMain=1&langId=22&storeId=1444&deleteCartCookie=true&URL=http%3A%2F%2Fwww.anttila.com%2Fshop%2Ffi%2Fnetanttila');
+        }
+        else if(document.location.host.indexOf("kodin1") > -1){
+            logout('https://www.kodin1.com/shop/Logoff?catalogId=3444&myAcctMain=1&langId=22&storeId=3444&deleteCartCookie=true&URL=http%3A%2F%2Fwww.kodin1.com%2Fshop%2Ffi%2Fkodin1');
+        }
+        changeWarningTime(0);
 		//deleteUserLogonIdCookie();
 		//logout('https://www.anttila.com/shop/Logoff?catalogId=1444&myAcctMain=1&langId=22&storeId=1444&deleteCartCookie=true&URL=http%3A%2F%2Fwww.anttila.com%2Fshop%2Ffi%2Fnetanttila');
     }
     else if (secondsDiff >= IDLE_TIMEOUT && first_timeout == false) {
         //window.clearInterval(_idleSecondsTimer);
-        
+        changeWarningTime(IDLE_TIMEOUT_2);
+        setWarningVisibility(true);
         console.log("yli ajasta");
         first_timeout = true;
+
+    }
+    else if(secondsDiff >= IDLE_TIMEOUT && first_timeout == true){
+        changeWarningTime(IDLE_TIMEOUT+IDLE_TIMEOUT_2-secondsDiff);
     }
 }
 
@@ -95,7 +120,7 @@ function idlecheck(){
 	var name = getCookie("DISPLAYNAME");
     
 	if(name != "guest" && name != null && name.length > 0){
-		
+		initWarning();
 		AttachEvent(document, 'click', ResetTime);
 		AttachEvent(document, 'mousemove', ResetTime);
 		AttachEvent(document, 'keypress', ResetTime);
@@ -112,6 +137,28 @@ function idlecheck(){
 
 }
 
+function initWarning(){
+    console.log("naytetaan varoitus");
+    iDiv = document.createElement('div');
+    iDiv.id = 'idlew';
+    iDiv.innerHTML = "Automaattinen uloskirjautuminen, jos et liikuta hiirtä."
+    iDiv2 = document.createElement('div');
+    iDiv2.id = 'textcount';
+    iDiv.appendChild(iDiv2);
+    document.getElementsByTagName('body')[0].appendChild(iDiv);
+}
+
+function setWarningVisibility(show){
+    if(show == true)
+        iDiv.style.display = "block";
+    else
+        iDiv.style.display = "none";
+}
+
+function changeWarningTime(value){
+    iDiv2.innerHTML = value;
+
+}
 
 function getCookie(cname) {
     var name = cname + "=";

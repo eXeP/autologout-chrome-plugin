@@ -1,6 +1,6 @@
 internalStorage = {};
-var idlet1 = 30;
-var idlet2 = 15;
+var idlet1 = 20;
+var idlet2 = 20;
 
 //tee tämä onchange storage!!
 
@@ -35,9 +35,14 @@ document.addEventListener('myFetchEvent', function(event) {
   	
     
 });
+//console.log("cs valmis");
 
+var link = document.createElement("link");
+link.href = chrome.extension.getURL("inject.css");
+link.type = "text/css";
+link.rel = "stylesheet";
+document.getElementsByTagName("head")[0].appendChild(link);
 
-console.log("cs valmis");
 var s = document.createElement('script');
 s.src = chrome.extension.getURL("injectscript.js");
 (document.head||document.documentElement).appendChild(s);

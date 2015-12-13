@@ -1,0 +1,24 @@
+#idlew 
+{
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    width:40em;
+    height:20em;
+    margin-top: -10em; /*set to a negative number 1/2 of your height*/
+    margin-left: -20em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+  	z-index:42;
+  	display:none;
+  	text-align: center;
+	vertical-align: middle;
+	font-size: 20;
+}
+#textcount
+{
+	text-align: center;
+	vertical-align: middle;
+	line-height: 10em;
+	font-size: 25px;
+}

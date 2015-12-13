@@ -25,9 +25,9 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.anttila.com/*"],
+      "matches": ["*://*.anttila.com/*", "*://*.kodin1.com/*"],
       "js": ["contentscript.js"]
     }
   ],
-  "web_accessible_resources": ["injectscript.js"]
+  "web_accessible_resources": ["injectscript.js", "inject.css"]
 }

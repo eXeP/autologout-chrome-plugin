@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 function getIdle1(){
 	chrome.storage.sync.get({
-    	idletime1: 30,
+    	idletime1: 20,
   	}, function(items) {
     	return items.idletime1;
   	});
@@ -16,7 +16,7 @@ function getIdle1(){
 
 function getIdle2(){
 	chrome.storage.sync.get({
-    	idletime2: 15,
+    	idletime2: 20,
   	}, function(items) {
     	return items.idletime2;
   	});
